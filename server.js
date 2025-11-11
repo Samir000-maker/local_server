@@ -469,21 +469,30 @@ app.get('/upload-status', (req, res) => {
   });
 });
 
-// ── HEALTH CHECK ─────────────────────────────────────────────────────────────
 app.get('/health', (req, res) => {
-  const memUsage = process.memoryUsage();
-  res.json({
-    status: 'OK',
-    timestamp: timestamp(),
-    uptime_seconds: Math.floor(process.uptime()),
+  const healthData = {
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
     memory: {
-      rss_mb: (memUsage.rss / 1024 / 1024).toFixed(2),
-      heap_used_mb: (memUsage.heapUsed / 1024 / 1024).toFixed(2),
-      heap_total_mb: (memUsage.heapTotal / 1024 / 1024).toFixed(2)
+      used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
+      total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
+      unit: 'MB'
     },
-    active_uploads: activeUploads.size,
-    compression_thresholds: COMPRESSION_THRESHOLDS
-  });
+    server: {
+      name: 'Your Server Name', // Change this for each server
+      nodeVersion: process.version,
+      platform: process.platform
+    }
+  };
+  
+  // Return 200 OK with health data
+  res.status(200).json(healthData);
+});
+
+// Alternative simple health check (if you prefer minimal response)
+app.get('/ping', (req, res) => {
+  res.status(200).send('pong');
 });
 
 // ── ERROR HANDLER ────────────────────────────────────────────────────────────
