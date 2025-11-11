@@ -469,25 +469,8 @@ app.get('/upload-status', (req, res) => {
   });
 });
 
-app.get('/health', (req, res) => {
-  const healthData = {
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    memory: {
-      used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
-      total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
-      unit: 'MB'
-    },
-    server: {
-      name: 'Your Server Name', // Change this for each server
-      nodeVersion: process.version,
-      platform: process.platform
-    }
-  };
-  
-  // Return 200 OK with health data
-  res.status(200).json(healthData);
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
 });
 
 // Alternative simple health check (if you prefer minimal response)
