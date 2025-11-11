@@ -328,7 +328,7 @@ app.post('/upload', upload.single('media'), async (req, res) => {
   activeUploads.set(uploadId, { start, file: originalname, size });
   
   // Set generous timeout
-  res.setTimeout(600000); // 10 minutes
+  //res.setTimeout(600000); // 10 minutes
   
   // Keep connection alive
   const keepAliveInterval = setInterval(() => {
